@@ -1,0 +1,94 @@
+# --------------------------------------------------
+# Detection
+# --------------------------------------------------
+
+# cat=Detection/general/10; type=boolean; label=Check SQL injections
+checkSqlInjAttacks = 1
+
+# cat=Detection/general/20; type=boolean; label=Check HTTP headers
+checkHeaders = 1
+
+# cat=Detection/general/30; type=boolean; label=Check XSS
+checkXss = 1
+
+# cat=Detection/general/40; type=boolean; label=Check cookie variables
+checkCookieVars = 0
+
+# cat=Detection/logging/50; type=boolean; label=Log attacks in database
+logAttacksInDB = 1
+
+
+# --------------------------------------------------
+# Blocking
+# --------------------------------------------------
+
+# cat=Blocking/general/10; type=boolean; label=Block requests after an attack
+blockRequests = 1
+
+# cat=Blocking/thresholds/20; type=int+; label=Maximum number of attacks before blocking
+maxCountAttemptsForBlock = 3
+
+# cat=Blocking/thresholds/30; type=int+; label=Attempt interval in seconds
+attemptIntervalInSeconds = 300
+
+# cat=Blocking/thresholds/40; type=int+; label=Block attackers for x seconds after the maximum number of attempts
+blockDelayInSeconds = 900
+
+
+# --------------------------------------------------
+# Notifications
+# --------------------------------------------------
+
+# cat=Notifications/mail/10; type=boolean; label=Email admin after blocking
+sendBlockMail = 1
+
+# cat=Notifications/mail/20; type=boolean; label=Email admin after every attempted attack
+sendMailEveryRequest = 1
+
+# cat=Notifications/mail/30; type=string; label=Sender email: If empty, [MAIL][defaultMailFromAddress] will be used
+mailFrom =
+
+# cat=Notifications/mail/40; type=string; label=Sender name: If empty, [MAIL][defaultMailFromName] will be used (Fallback will be T3Lockdown)
+mailFromName =
+
+# cat=Notifications/mail/50; type=string; label=Recipients of the email (comma-separated)
+blockMailTo =
+
+
+# --------------------------------------------------
+# Rate limiting
+# --------------------------------------------------
+
+# cat=Rate limiting/general/10; type=boolean; label=Activate rate limiting
+rateLimitingEnabled = 1
+
+# cat=Rate limiting/general/20; type=int+; label=Maximum number of requests
+rateLimitMaxRequests = 30
+
+# cat=Rate limiting/general/30; type=int+; label=Request period in seconds
+rateLimitSecondsWindow = 60
+
+
+# --------------------------------------------------
+# Header inspection
+# --------------------------------------------------
+
+# cat=Header inspection/general/10; type=user[Extension14v\T3lockdown\ViewHelpers\ConfTextArea->render]; label=Allowed header exceptions: Comma-separated list of allowed header substrings
+allowedHeaderExceptions = force-revalidate
+
+# cat=Header inspection/general/20; type=user[Extension14v\T3lockdown\ViewHelpers\ConfTextArea->render]; label=Ignore header string parsing: Comma-separated list of header names that should not be inspected
+ignoreHeaderStringParsing =
+
+
+# --------------------------------------------------
+# Lists
+# --------------------------------------------------
+
+# cat=Lists/ip/10; type=user[Extension14v\T3lockdown\ViewHelpers\ConfTextArea->render]; label=Blacklist: Comma-separated list of IP addresses that should be blocked each time the page is accessed. incl. CIDR support
+blackList =
+
+# cat=Lists/ip/20; type=user[Extension14v\T3lockdown\ViewHelpers\ConfTextArea->render]; label=Whitelist: Comma-separated list of IP addresses that are always allowed. incl. CIDR support
+whiteList =
+
+# cat=Lists/url/30; type=user[Extension14v\T3lockdown\ViewHelpers\ConfTextArea->render]; label=URL whitelist: Comma-separated list of sub-pages that are always allowed. No wildcard possible
+urlWhiteList = /tiles, /nominatim

@@ -1,0 +1,34 @@
+{
+    "name": "one4vision/t3lockdown",
+    "type": "typo3-cms-extension",
+    "description": "Protects TYPO3 against SQL injection, XSS, malicious headers, abusive requests, and repeated attacks with logging, alerts, rate limiting, temporary IP blocking, and backend analysis tools.",
+    "license": "GPL-2.0-or-later",
+    "keywords": ["typo3", "typo3-extension", "security", "firewall", "xss", "sql-injection", "rate-limiting"],
+    "minimum-stability": "stable",
+    "authors": [
+        {
+            "name": "Oliver Busch",
+            "email": "dev@one4vision.de",
+            "role": "Developer",
+            "homepage": "https://www.one4vision.de"
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/one4vision/t3lockdown/issues",
+        "source": "https://github.com/one4vision/t3lockdown.git"
+    },
+    "require": {
+        "typo3/cms-core": "^13.4",
+        "php": ">=8.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "Extension14v\\T3lockdown\\": "Classes/"
+        }
+    },
+    "extra": {
+        "typo3/cms": {
+            "extension-key": "t3lockdown"
+        }
+    }
+}

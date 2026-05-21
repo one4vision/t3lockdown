@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="messages" date="2025-09-23T11:08:37Z" product-name="t3lockdown">
+		<header/>
+		<body>
+			<trans-unit id="labels.block.attack_date">
+				<source>Date of the attack</source>
+			</trans-unit>
+            <trans-unit id="labels.block.client_ip_address">
+                <source>Client IP Address</source>
+            </trans-unit>
+            <trans-unit id="labels.block.block_minutes">
+                <source>Block for x minutes</source>
+            </trans-unit>
+            <trans-unit id="labels.block.from_attempt">
+                <source>Attempt UID</source>
+            </trans-unit>
+
+            <trans-unit id="labels.attempts.attack_date">
+                <source>Date of the attack</source>
+            </trans-unit>
+            <trans-unit id="labels.attempts.attack_types">
+                <source>Attack types</source>
+            </trans-unit>
+            <trans-unit id="labels.attempts.header_attack">
+                <source>Header attack</source>
+            </trans-unit>
+            <trans-unit id="labels.attempts.host">
+                <source>Host</source>
+            </trans-unit>
+            <trans-unit id="labels.attempts.request_file">
+                <source>Requested file</source>
+            </trans-unit>
+            <trans-unit id="labels.attempts.request_url">
+                <source>Requested URI</source>
+            </trans-unit>
+            <trans-unit id="labels.attempts.request_method">
+                <source>Requested method</source>
+            </trans-unit>
+            <trans-unit id="labels.attempts.input_vars">
+                <source>Input parameters</source>
+            </trans-unit>
+            <trans-unit id="labels.attempts.remote_ip">
+                <source>Client IP Address</source>
+            </trans-unit>
+            <trans-unit id="labels.attempts.useragent">
+                <source>User-Agent</source>
+            </trans-unit>
+            <trans-unit id="labels.attempts.details">
+                <source>Details</source>
+            </trans-unit>
+		</body>
+	</file>
+</xliff>

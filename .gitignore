@@ -1,0 +1,6 @@
+.Build/
+.idea/
+composer.lock
+*.zip
+db.sql.gz
+*.000

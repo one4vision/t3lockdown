@@ -1,0 +1,51 @@
+# Configuration/Services.yaml
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+    public: false
+
+  Extension14v\T3lockdown\:
+    resource: '../Classes/*'
+
+  Extension14v\T3lockdown\Security\Configuration\LockdownConfigurationFactory:
+    shared: true
+
+  Extension14v\T3lockdown\Service\LockdownService:
+    arguments:
+      $configuration: '@Extension14v\T3lockdown\Security\Configuration\LockdownConfiguration'
+      $payloadInspector: '@Extension14v\T3lockdown\Security\Inspection\PayloadInspector'
+      $headerInspector: '@Extension14v\T3lockdown\Security\Inspection\HeaderInspector'
+      $inputNormalizer: '@Extension14v\T3lockdown\Security\Inspection\InputNormalizer'
+      $rateLimiter: '@Extension14v\T3lockdown\Security\RateLimit\RateLimiter'
+      $attackLogger: '@Extension14v\T3lockdown\Security\Logging\AttackLogger'
+      $notificationService: '@Extension14v\T3lockdown\Security\Notification\NotificationService'
+      $blocklistService: '@Extension14v\T3lockdown\Security\Blocklist\BlocklistService'
+
+  Extension14v\T3lockdown\Security\Inspection\PayloadInspector:
+    arguments:
+      $configuration: '@Extension14v\T3lockdown\Security\Configuration\LockdownConfiguration'
+
+  Extension14v\T3lockdown\Security\Inspection\HeaderInspector:
+    arguments:
+      $configuration: '@Extension14v\T3lockdown\Security\Configuration\LockdownConfiguration'
+
+  Extension14v\T3lockdown\Security\RateLimit\RateLimiter:
+    arguments:
+      $configuration: '@Extension14v\T3lockdown\Security\Configuration\LockdownConfiguration'
+
+  Extension14v\T3lockdown\Security\Logging\AttackLogger:
+    arguments:
+      $configuration: '@Extension14v\T3lockdown\Security\Configuration\LockdownConfiguration'
+
+  Extension14v\T3lockdown\Security\Notification\NotificationService:
+    arguments:
+      $configuration: '@Extension14v\T3lockdown\Security\Configuration\LockdownConfiguration'
+
+  Extension14v\T3lockdown\Security\Blocklist\BlocklistService:
+    arguments:
+      $configuration: '@Extension14v\T3lockdown\Security\Configuration\LockdownConfiguration'
+
+  Extension14v\T3lockdown\Security\Configuration\LockdownConfiguration:
+    factory: ['@Extension14v\T3lockdown\Security\Configuration\LockdownConfigurationFactory', 'createFromExtensionConfiguration']
+    shared: true

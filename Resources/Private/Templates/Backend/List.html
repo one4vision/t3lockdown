@@ -1,0 +1,131 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+      xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
+      xmlns:be="http://typo3.org/ns/TYPO3/CMS/Backend/ViewHelpers"
+      data-namespace-typo3-fluid="true">
+<f:layout name="Module" />
+
+<f:section name="Content">
+    <div id="t3lockdown-backend">
+        <f:asset.script identifier="t3lChartJs" src="EXT:t3lockdown/Resources/Public/JavaScript/canvasjs/canvasjs.min.js" />
+        <f:asset.script identifier="t3lChartBuilderJs" src="EXT:t3lockdown/Resources/Public/JavaScript/Charts.js" type="module" />
+        <f:asset.css identifier="t3lBackendCss" href="EXT:t3lockdown/Resources/Public/Css/Backend.css" />
+        <h1>T3LockDown Analysis</h1>
+
+        <div class="row mt-2 mb-2 border-bottom pb-2">
+            <div class="col-2">
+                <div class="p-2 bg-danger text-white rounded text-center">
+                    <p><em>SQL Injections</em></p>
+                    <p style="font-size: 200%"><strong><f:format.number decimals="0" thousandsSeparator=".">{dataset.sql}</f:format.number></strong></p>
+                </div>
+            </div>
+            <div class="col-2">
+                <div class="p-2 bg-warning text-white rounded text-center">
+                    <p><em>XSS Attacks</em></p>
+                    <p style="font-size: 200%"><strong><f:format.number decimals="0" thousandsSeparator=".">{dataset.xss}</f:format.number></strong></p>
+                </div>
+            </div>
+            <div class="col-2">
+                <div class="p-2 bg-primary text-white rounded text-center">
+                    <p><em>Header Attacks</em></p>
+                    <p style="font-size: 200%"><strong><f:format.number decimals="0" thousandsSeparator=".">{dataset.header}</f:format.number></strong></p>
+                </div>
+            </div>
+            <div class="col-6">
+                <input type="hidden" id="t3lChartData" value="{chartData}" />
+                <div id="t3lStatsContainer" style="height: 100px"></div>
+            </div>
+        </div>
+
+        <f:if condition="{attempts -> f:count()} > 0">
+            <f:then>
+                <div class="row gy-2 gx-3 align-items-center mb-3">
+                    <div class="col-auto">
+                        <label class="visually-hidden" for="filterType">Typ</label>
+                        <select class="form-select" id="filterType">
+                            <option value="all">Alle Angriffstypen</option>
+                            <option value="sql">SQL Injections</option>
+                            <option value="xss">XSS Attacks</option>
+                            <option value="header">HEADER Attacks</option>
+                        </select>
+                    </div>
+                    <div class="col-auto">
+                        <label class="visually-hidden" for="filterMethod">Method</label>
+                        <select class="form-select" id="filterMethod">
+                            <option value="all">Alle Methoden</option>
+                            <option value="GET">GET-Methode</option>
+                            <option value="POST">POST-Methode</option>
+                            <option value="PUT">PUT-Methode</option>
+                            <option value="DELETE">DELETE-Methode</option>
+                        </select>
+                    </div>
+                    <div class="col-auto">
+                        <div class="btn-group" role="group">
+                            <f:for each="{dataset.dates}" as="year" key="y">
+                                <button type="button" class="btn btn-secondary yearSelect" data-year="{y}">{y}</button>
+                            </f:for>
+                        </div>
+                    </div>
+                    <div class="col-auto">
+                        <button type="button" class="btn btn-default" id="resetFilters" title="Filter zurücksetzen">
+                            <core:icon identifier="actions-filter" overlay="overlay-deleted" size="small" />
+                        </button>
+                    </div>
+                    <div class="col-auto">
+                        <nav aria-label="Seiten-Navigation">
+                            <ul class="pagination" id="pagination"></ul>
+                        </nav>
+                    </div>
+                    <div class="col-auto">
+                        <span id="rowAmount"></span>
+                    </div>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover" id="attack-list">
+                        <thead class="table-dark">
+                        <tr>
+                            <th style="width: 220px">Angriffsdatum</th>
+                            <th style="width: 80px">Methode</th>
+                            <th>IP-Adresse</th>
+                            <th>Angriffstyp</th>
+                            <th>Anfrage-Uri</th>
+                            <th>User-Agent</th>
+                            <th> </th>
+                        </tr>
+                        </thead>
+                        <tbody class="table-group-divider">
+                        <f:for each="{attempts}" as="attempt" iteration="a">
+                             <tr data-types="{attempt.attackTypes}" data-method="{attempt.requestMethod}" data-year="{attempt.attackDate -> f:format.date(format: 'Y', locale: 'de-DE')}" data-month="{attempt.attackDate -> f:format.date(format: 'm', locale: 'de-DE')}">
+                                 <td>{attempt.attackDate -> f:format.date(format: 'D, d M Y H:i:s', locale: 'de-DE')}</td>
+                                 <td>{attempt.requestMethod}</td>
+                                 <td>{attempt.remoteIp}</td>
+                                 <td>
+                                     <f:variable name="types"><f:split value="{attempt.attackTypes}" separator="," /></f:variable>
+                                     <f:for each="{types}" as="type" iteration="t">
+                                         <f:variable name="upperType"><f:format.case mode="upper">{type}</f:format.case></f:variable>
+                                         <f:switch expression="{type}">
+                                             <f:case value="sql"><span class="badge badge-danger">{upperType}</span></f:case>
+                                             <f:case value="xss"><span class="badge badge-warning">{upperType}</span></f:case>
+                                             <f:defaultCase><span class="badge badge-info">{upperType}</span></f:defaultCase>
+                                         </f:switch>
+                                     </f:for>
+                                 </td>
+                                 <td><input type="text" class="form-control" value="{attempt.requestUrl}" readonly /></td>
+                                 <td><input type="text" class="form-control" value="{attempt.useragent}" readonly /></td>
+                                 <td>
+                                     <button type="button" class="btn btn-primary detailBtn" data-uid="{attempt.uid}">Details</button>
+                                     <div id="details-{attempt.uid}" style="display:none;">{attempt.encodedDetails}</div>
+                                 </td>
+                             </tr>
+                        </f:for>
+                        </tbody>
+                    </table>
+                </div>
+            </f:then>
+            <f:else>
+                <div class="alert alert-info">Keine Angriffsversuche vorhanden!</div>
+            </f:else>
+        </f:if>
+    </div>
+</f:section>
+</html>
