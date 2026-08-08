@@ -43,7 +43,7 @@ blockDelayInSeconds = 900
 sendBlockMail = 1
 
 # cat=Notifications/mail/20; type=boolean; label=Email admin after every attempted attack
-sendMailEveryRequest = 1
+sendMailEveryRequest = 0
 
 # cat=Notifications/mail/30; type=string; label=Sender email: If empty, [MAIL][defaultMailFromAddress] will be used
 mailFrom =

@@ -13,13 +13,9 @@
             "homepage": "https://www.one4vision.de"
         }
     ],
-    "support": {
-        "issues": "https://github.com/one4vision/t3lockdown/issues",
-        "source": "https://github.com/one4vision/t3lockdown.git"
-    },
     "require": {
-        "typo3/cms-core": "^13.4",
-        "php": ">=8.2"
+        "typo3/cms-core": "^13.4 || ^14.3",
+        "php": ">=8.2 <8.5"
     },
     "autoload": {
         "psr-4": {
