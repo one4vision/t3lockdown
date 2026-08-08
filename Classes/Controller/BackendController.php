@@ -9,7 +9,9 @@ use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 
@@ -35,6 +37,7 @@ class BackendController extends ActionController
     protected IconFactory $iconFactory;
     protected PageRenderer $pageRenderer;
     protected AttemptsRepository $attemptsRepository;
+    protected int $t3v = 13;
 
     public function injectModuleTemplateFactory(ModuleTemplateFactory $moduleTemplateFactory): void
     {
@@ -64,6 +67,9 @@ class BackendController extends ActionController
         $this->moduleData = $this->request->getAttribute('moduleData');
         $this->moduleTemplate = $this->moduleTemplateFactory->create($this->request);
         $this->moduleTemplate->setFlashMessageQueue($this->getFlashMessageQueue());
+
+        $t3Version = GeneralUtility::makeInstance(Typo3Version::class);
+        $this->t3v = $t3Version->getMajorVersion();
     }
 
     /**
@@ -94,12 +100,14 @@ class BackendController extends ActionController
         $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
         $requestUri = $this->request->getUri();
 
-        // Reload
-        $reloadButton = $buttonBar->makeLinkButton()
-            ->setHref($requestUri)
-            ->setTitle('Reload')
-            ->setIcon($this->iconFactory->getIcon('actions-refresh', Icon::SIZE_SMALL));
-        $buttonBar->addButton($reloadButton, ButtonBar::BUTTON_POSITION_RIGHT);
+        if($this->t3v < 14) {
+            // Reload
+            $reloadButton = $buttonBar->makeLinkButton()
+                ->setHref($requestUri)
+                ->setTitle('Reload')
+                ->setIcon($this->iconFactory->getIcon('actions-refresh', Icon::SIZE_SMALL));
+            $buttonBar->addButton($reloadButton, ButtonBar::BUTTON_POSITION_RIGHT);
+        }
 
         // Shortcut
         $shortcutButton = $buttonBar->makeShortcutButton()

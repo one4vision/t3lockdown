@@ -7,10 +7,10 @@ $EM_CONF[$_EXTKEY] = [
 	'author_email' => 'oliver.busch@one4vision.de',
     'author_company' => 'one4vision GmbH',
 	'state' => 'stable',
-	'version' => '5.0.0',
+	'version' => '6.0.0',
     'constraints' => [
         'depends' => [
-            'typo3' => '13.4.20-13.4.99'
+            'typo3' => '13.4.20-14.3.99'
         ],
         'conflicts' => [],
         'suggests' => [],
