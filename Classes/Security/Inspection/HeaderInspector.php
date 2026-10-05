@@ -18,7 +18,7 @@ final readonly class HeaderInspector
         $this->headerPatterns = [
             'xss_tag' => '/<\s*(svg|img|iframe|script|object|embed|body|video|audio)\b/i',
             'xss_event' => '/on(?:load|error|click|mouse(?:over|enter)|focus|animationstart|pointerdown)\s*=/i',
-            'xss_js' => '/(?:javascript|data\s*:text\/html)/i',
+            'xss_js' => '/(?:javascript\s*:|data\s*:text\/html)/i',
             'xss_script_words' => '/(?:document\.cookie|window\.location|eval\s*\(|settimeout\s*\(|setinterval\s*\()/i',
         ];
 
